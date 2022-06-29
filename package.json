@@ -1,0 +1,24 @@
+{
+  "name": "node-corn-task",
+  "version": "1.0.0",
+  "description": "Tusharkanti Joshi",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tusharkantijoshi/node-cron-task.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tusharkantijoshi/node-cron-task/issues"
+  },
+  "homepage": "https://github.com/tusharkantijoshi/node-cron-task#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
