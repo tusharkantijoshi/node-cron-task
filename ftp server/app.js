@@ -9,4 +9,5 @@ app.use(
    express.static('public/ftp'),
    serveIndex('public/ftp', { icons: true })
 )
+
 app.listen(PORT, () => console.log(`FTP Server running on port: http://localhost:${PORT}`));
