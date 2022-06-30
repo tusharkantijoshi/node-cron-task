@@ -5,7 +5,7 @@ const app = express();
 const PORT = 3000;
 
 app.use(
-   '/ftp',
+   '/',
    express.static('public/ftp'),
    serveIndex('public/ftp', { icons: true })
 )

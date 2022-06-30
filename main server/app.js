@@ -1,56 +1,66 @@
 import express from "express";
 import axios from "axios"
 import XLSX from "xlsx"
+import path from "path"
+import fs from "fs"
+
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = 5000
+
+// app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => {
    console.log("get");
    res.send('Server Started')
 });
 
-
 app.get("/file", downloadFile);
 
 async function downloadFile(req, res) {
+   //! 1
+   const responseData = await axios.get('http://localhost:3000/demo.xlsx');
+   console.log(responseData);
+   console.log(typeof (responseData)); // output: object
 
-   const url = 'http://localhost:3000/ftp/demo.xlsx';
-   const responseData = await axios.get(url);
-   // console.log(typeof (responseData)); // output: objects
+   // const response = JSON.stringify(responseData)
+   // console.log(typeof response);
 
-   // const dataPath = path.join(__dirname, 'data', 'demo.xlsx')
-   // const writer = fs.writeFileSync(dataPath);
+   //! 2
+   /*  const filePath = path.join(__dirname, 'data', 'demo.xlsx')
+    const localPath = fs.createWriteStream(filePath)
+ 
+    let request = await axios.get('http://localhost:3000/demo.xlsx', (responseData) => {
+       console.log(typeof (responseData));
+       responseData.pipe(localPath);
+    })
+  */
 
-   const workbook = XLSX.readFile(responseData);
+   //! download the file
+   const filePath = path.resolve(__dirname, 'data', 'demo.xlsx')
+   fs.createWriteStream(filePath, responseData);
 
+   // let fileBuffer = new Blob(responseData);
+   // console.log(fileBuffer);
+
+   //! convert excel data to JSON 
+   const workbook = XLSX.readFile("./data/demo.xlsx");
    let noOfSheet = workbook.SheetNames;
-   // console.log(noOfSheet); // Sheet1, Sheet2, ...
 
    noOfSheet.forEach((entry) => {
       let worksheet = workbook.Sheets[entry];
-      // console.log(worksheet); //getting the complete sheet
 
       let data = [];
       data = XLSX.utils.sheet_to_json(worksheet);
       console.log(data);
    });
 
-   // // const fileData = fs.createWriteStream(dataPath);
-   // // responseData.data.pipe(writer)
-   // fs.writeFileSync(writer, responseData);
-
-   // //! convert excel to JSON 
-
-
-
-
-
+   console.log('downloaded');
    res.send('downloaded')
 }
-
-
-// app.get("/file", downloadFile);
 
 
 app.listen(PORT, () => console.log(`Server running on port: http://localhost:${PORT}`));
