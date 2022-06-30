@@ -3,7 +3,7 @@ var ftpClient = require('ftp-client'),
       host: '127.0.0.1',
       port: 21,
       user: 'anonymous',
-      password: 'anonymous@anonymous'
+      password: 'anonymous'
    },
    options = {
       logging: 'basic'
@@ -14,11 +14,13 @@ var ftpClient = require('ftp-client'),
 
 client.connect(function () {
 
-   client.download('/public', '/test',
+
+   console.log("connected");
+
+   client.download('/public', 'test/',
       {
          overwrite: 'none'
       }, function (result) {
          console.log(result);
       });
-
 });
