@@ -1,21 +1,24 @@
 var ftpClient = require('ftp-client'),
    config = {
-      host: 'localhost',
+      host: '127.0.0.1',
       port: 21,
       user: 'anonymous',
-      password: 'anonymous'
+      password: 'anonymous@anonymous'
    },
    options = {
       logging: 'basic'
    },
    client = new ftpClient(config, options);
 
+//! After creating the new object you have to manually connect to the server by using the connect method:
+
 client.connect(function () {
 
-   client.download('./test', './test', {
-      overwrite: 'all'
-   }, function (result) {
-      console.log(result);
-   });
+   client.download('/public', '/test',
+      {
+         overwrite: 'none'
+      }, function (result) {
+         console.log(result);
+      });
 
 });
