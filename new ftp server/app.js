@@ -11,7 +11,7 @@ const ftpServer = new FtpSrv({
 
 ftpServer.on('login', ({ connection, username, password }, resolve, reject) => {
    if (username === 'anonymous' && password === 'anonymous') {
-      return resolve({ root: "./public/" });
+      return resolve({ root: "./src/" });
    }
    return reject(new errors.GeneralError('Invalid username or password', 401));
 });
@@ -19,6 +19,5 @@ ftpServer.on('login', ({ connection, username, password }, resolve, reject) => {
 ftpServer.listen().then(() => {
    console.log('Server running');
 });
-
 
 //! Events: login: Occurs when a client is attempting to login. Here you can resolve the login request by username and password.
