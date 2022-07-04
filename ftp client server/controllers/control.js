@@ -3,7 +3,8 @@ import schedule from 'node-schedule'; //! for scheduling a job
 import XLSX from "xlsx"; //! for converting excel data to json
 import nodemailer from 'nodemailer'; //! for mailing
 
-export const ftpClient = async (req, res) => {
+//! for downloading files from the ftp server
+const ftpClient = async (req, res) => {
    const client = new ftp.Client()
 
    client.ftp.verbose = true
@@ -28,13 +29,17 @@ export const ftpClient = async (req, res) => {
    }
    client.close()
 
-   res.send("File Downloaded")
+   // res.send("File Downloaded")
 }
 
+//! for running a cron job 
 export const jsonData = (req, res) => {
    //! Node Cron
    schedule.scheduleJob('*/5 * * * * *', () => {
-      console.log('running a task every 5 seconds');
+
+      ftpClient();
+
+      console.log('Downloading file every 5 seconds');
 
       // res.sendStatus(200);
       // res.setHeader('X-Foo', 'json')
@@ -48,7 +53,6 @@ export const jsonData = (req, res) => {
          // console.log(noOfSheet); // Sheet1, Sheet2, ...
 
          let data = [];
-
          noOfSheet.forEach((entry) => {
             let worksheet = workbook.Sheets[entry];
             // console.log(worksheet); //getting the complete sheet
@@ -62,12 +66,17 @@ export const jsonData = (req, res) => {
          // res.sendStatus(200);
          // res.setHeader('X-Foo', 'Express')
          // res.setHeader('Content-Type', 'application/json');
+         // return res.status(400).json
 
          // console.log('data');
          // console.log(req.headers);
-         res.send(data)
 
+         // res.statusCode = 200;
+         // res.setHeader('Content-Type', 'json');
+         // res.send(data)
+         console.log(data);
 
+         // return res.status(400).json
       } catch (error) {
          console.log(error);
       }
