@@ -8,6 +8,6 @@ const router = express.Router();
 
 // router.get('/file', ftpClient);
 
-router.get('/data', jsonData);
+router.get('/', jsonData);
 
 export default router;
